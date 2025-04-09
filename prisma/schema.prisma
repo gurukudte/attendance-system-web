@@ -14,12 +14,28 @@ datasource db {
 }
 
 enum Role {
+  SUPERADMIN
   ADMIN
   USER
-  RA
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  TERMINATED
+}
+
+enum EmployeeRole {
   EMPLOYEE
+  MANAGER
+  ADMIN
+  RA
   VOLUNTEER
-  TECHNICIAN
+  IT_TECHNICIAN
+  NEURO_TECHNICIAN
+  INTERN
+  CONTRACTOR
 }
 
 model User {
@@ -54,8 +70,63 @@ model Account {
   @@map("accounts")
 }
 
-model TechSheetData {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  technicianName String
-  sheetID        String
+model Organization {
+  id                   String                 @id @default(auto()) @map("_id") @db.ObjectId
+  name                 String                 @unique
+  timezone             String?
+  dateFormat           String                 @default("MM/DD/YYYY")
+  customEmployeeFields customEmployeeFields[]
+  apiKeys              ApiKey[]
+  adminUsers           AdminUser[]
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  Employee             Employee[]
+}
+
+model customEmployeeFields {
+  id       String       @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  type     String
+  required Boolean      @default(false)
+  org      Organization @relation(fields: [orgId], references: [id])
+  orgId    String       @db.ObjectId
+}
+
+model ApiKey {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  key       String       @unique
+  org       Organization @relation(fields: [orgId], references: [id])
+  orgId     String       @db.ObjectId
+  createdAt DateTime     @default(now())
+}
+
+model AdminUser {
+  id    String       @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  email String       @unique
+  role  String
+  org   Organization @relation(fields: [orgId], references: [id])
+  orgId String       @db.ObjectId
+}
+
+model Employee {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  org            Organization @relation(fields: [orgId], references: [id])
+  orgId          String       @db.ObjectId
+  employee_id    String       @unique
+  name           String
+  email          String       @unique
+  phone          String?
+  position       EmployeeRole @default(EMPLOYEE)
+  joinDate       DateTime?
+  lastWorkingDay DateTime?
+
+  status EmployeeStatus @default(ACTIVE)
+  role   Role           @default(USER)
+
+  customData Json? // Stores dynamic fields based on customEmployeeFields
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

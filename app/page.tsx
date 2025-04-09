@@ -10,10 +10,13 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { EmployeeShiftTable } from "@/components/EmployeeShiftTable";
+import { EmployeeShiftTable } from "@/components/pages/EmployeeShiftTable";
+import { SchedulingView } from "@/components/pages/SchedulingView";
+import { EmployeesView } from "@/components/pages/EmployeesView";
+import SettingsView from "@/components/pages/SettingsView";
 
 function EmployeeDashboard() {
-  const [activeView, setActiveView] = useState("shifts");
+  const [activeView, setActiveView] = useState("settings");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -30,7 +33,7 @@ function EmployeeDashboard() {
       case "dashboard":
         return <DashboardOverview />;
       case "shifts":
-        return <EmployeeShiftTable data={shiftData} />;
+        return <EmployeeShiftTable />;
       case "employees":
         return <EmployeesView />;
       case "scheduling":
@@ -38,7 +41,7 @@ function EmployeeDashboard() {
       case "settings":
         return <SettingsView />;
       default:
-        return <EmployeeShiftTable data={shiftData} />;
+        return <EmployeeShiftTable />;
     }
   };
 
@@ -93,8 +96,8 @@ function EmployeeDashboard() {
             />
             <NavItem
               icon={<Clock className="w-5 h-5" />}
-              label="Shifts"
-              active={activeView === "shifts"}
+              label="Reports"
+              active={activeView === "Reports"}
               onClick={() => setActiveView("shifts")}
               sidebarOpen={sidebarOpen}
             />
@@ -256,191 +259,5 @@ function DashboardOverview() {
     </div>
   );
 }
-
-function EmployeesView() {
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-      <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-        Employees
-      </h2>
-      <p className="text-gray-600 dark:text-gray-300">
-        Employee management view will be displayed here.
-      </p>
-    </div>
-  );
-}
-
-function SchedulingView() {
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-      <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-        Scheduling
-      </h2>
-      <p className="text-gray-600 dark:text-gray-300">
-        Shift scheduling view will be displayed here.
-      </p>
-    </div>
-  );
-}
-
-function SettingsView() {
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-      <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-        Settings
-      </h2>
-      <p className="text-gray-600 dark:text-gray-300">
-        System settings view will be displayed here.
-      </p>
-    </div>
-  );
-}
-
-const shiftData = [
-  {
-    employee_id: "EMP001",
-    employee_name: "John Doe",
-    date: "2023-10-01",
-    shift_type: "Morning",
-    shift_login: "08:00:00",
-    shift_logout: "16:00:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:30:00",
-    total_break_time: "00:30:00",
-    break_count: 2,
-  },
-  {
-    employee_id: "EMP002",
-    employee_name: "Jane Smith",
-    date: "2023-10-01",
-    shift_type: "Afternoon",
-    shift_login: "12:00:00",
-    shift_logout: "20:00:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:45:00",
-    total_break_time: "00:15:00",
-    break_count: 1,
-  },
-  {
-    employee_id: "EMP003",
-    employee_name: "Robert Johnson",
-    date: "2023-10-01",
-    shift_type: "Night",
-    shift_login: "22:00:00",
-    shift_logout: "06:00:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:15:00",
-    total_break_time: "00:45:00",
-    break_count: 3,
-  },
-  {
-    employee_id: "EMP001",
-    employee_name: "John Doe",
-    date: "2023-10-02",
-    shift_type: "Morning",
-    shift_login: "08:15:00",
-    shift_logout: "16:15:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:20:00",
-    total_break_time: "00:40:00",
-    break_count: 2,
-  },
-  {
-    employee_id: "EMP004",
-    employee_name: "Emily Davis",
-    date: "2023-10-02",
-    shift_type: "Flexible",
-    shift_login: "09:30:00",
-    shift_logout: "17:30:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:50:00",
-    total_break_time: "00:10:00",
-    break_count: 1,
-  },
-  {
-    employee_id: "EMP002",
-    employee_name: "Jane Smith",
-    date: "2023-10-03",
-    shift_type: "Afternoon",
-    shift_login: "13:00:00",
-    shift_logout: "21:00:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:30:00",
-    total_break_time: "00:30:00",
-    break_count: 2,
-  },
-  {
-    employee_id: "EMP005",
-    employee_name: "Michael Brown",
-    date: "2023-10-03",
-    shift_type: "Morning",
-    shift_login: "07:45:00",
-    shift_logout: "15:45:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:00:00",
-    total_break_time: "01:00:00",
-    break_count: 3,
-  },
-  {
-    employee_id: "EMP003",
-    employee_name: "Robert Johnson",
-    date: "2023-10-04",
-    shift_type: "Night",
-    shift_login: "23:00:00",
-    shift_logout: "07:00:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:45:00",
-    total_break_time: "00:15:00",
-    break_count: 1,
-  },
-  {
-    employee_id: "EMP006",
-    employee_name: "Sarah Wilson",
-    date: "2023-10-04",
-    shift_type: "Flexible",
-    shift_login: "10:00:00",
-    shift_logout: "18:00:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "08:00:00",
-    total_break_time: "00:00:00",
-    break_count: 0,
-  },
-  {
-    employee_id: "EMP001",
-    employee_name: "John Doe",
-    date: "2023-10-05",
-    shift_type: "Morning",
-    shift_login: "08:05:00",
-    shift_logout: "16:05:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:35:00",
-    total_break_time: "00:25:00",
-    break_count: 2,
-  },
-  {
-    employee_id: "EMP004",
-    employee_name: "Emily Davis",
-    date: "2023-10-05",
-    shift_type: "Flexible",
-    shift_login: "09:00:00",
-    shift_logout: "17:00:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:55:00",
-    total_break_time: "00:05:00",
-    break_count: 1,
-  },
-  {
-    employee_id: "EMP007",
-    employee_name: "David Taylor",
-    date: "2023-10-06",
-    shift_type: "Afternoon",
-    shift_login: "14:00:00",
-    shift_logout: "22:00:00",
-    shift_duration: "08:00:00",
-    total_working_hours: "07:25:00",
-    total_break_time: "00:35:00",
-    break_count: 2,
-  },
-];
 
 export default EmployeeDashboard;

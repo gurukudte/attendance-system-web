@@ -3,7 +3,12 @@
  *
  * @constant {string[]}
  */
-export const publicRoutes = ["/"];
+export const publicRoutes = ["/", "/settings", "/employees", "/scheduling"];
+export const apiPublicRoutes = [
+  "/api/organizations",
+  "/api/employee",
+  // Add other public API routes here
+];
 
 /**
  * Routes for authentication.
