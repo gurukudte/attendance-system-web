@@ -168,7 +168,7 @@ async function createMultipleEmployees(
   return await prisma.$transaction(
     data.map((employee) =>
       prisma.employee.create({
-        data: { ...employee, email: employee.email || "" },
+        data: { ...employee },
       })
     )
   );
