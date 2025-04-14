@@ -88,7 +88,6 @@ export default function EmployeeFieldsTab({
         };
       }),
     };
-    console.log(customEmployeeFields);
     setNewField({ name: "", type: "text", required: false });
     setIsAddFieldDialogOpen(false);
     setPendingChanges(true);

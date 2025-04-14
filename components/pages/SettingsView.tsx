@@ -110,7 +110,6 @@ function SettingsView() {
   };
 
   const handleSave = () => {
-    console.log("Saving settings:", formData);
     setPendingChanges(false);
     setIsSaveDialogOpen(false);
   };

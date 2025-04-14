@@ -148,7 +148,6 @@ export function EmployeeShiftTable() {
           filters.month !== "month"
             ? item.date.split("-")[1] === filters.month
             : true;
-        console.log(matchedMonth);
         return matchesEmployeeId && matchesEmployeeName && matchesShiftType;
       });
       // const sortedData = filtered.filter((item) => {

@@ -48,7 +48,6 @@ export function useOrganizations() {
     try {
       dispatch(setLoadingAndError({ loading: true, error: null }));
       const validatedData = organizationUpdateSchema.parse(data);
-      console.log("Validated Data:", validatedData); // Debugging line
       const response = await fetch(`/api/organizations/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
