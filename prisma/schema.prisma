@@ -74,7 +74,7 @@ model Organization {
   id                   String                 @id @default(auto()) @map("_id") @db.ObjectId
   name                 String                 @unique
   timezone             String?
-  dateFormat           String                 @default("MM/DD/YYYY")
+  dateFormat           String                 @default("DD/MM/YYYY")
   customEmployeeFields customEmployeeFields[]
   apiKeys              ApiKey[]
   adminUsers           AdminUser[]
@@ -114,19 +114,44 @@ model Employee {
   id             String       @id @default(auto()) @map("_id") @db.ObjectId
   org            Organization @relation(fields: [orgId], references: [id])
   orgId          String       @db.ObjectId
-  employee_id    String       @unique
+  employee_id    String?      @unique
   name           String
-  email          String       @unique
+  email          String?      @unique
   phone          String?
   position       EmployeeRole @default(EMPLOYEE)
   joinDate       DateTime?
   lastWorkingDay DateTime?
 
-  status EmployeeStatus @default(ACTIVE)
-  role   Role           @default(USER)
+  status  EmployeeStatus @default(ACTIVE)
+  role    Role           @default(USER)
+  onLeave Boolean        @default(false)
 
   customData Json? // Stores dynamic fields based on customEmployeeFields
 
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  EmployeeSchedule EmployeeSchedule[]
+}
+
+model EmployeeSchedule {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  orgId         String   @db.ObjectId
+  employee_id   String   @db.ObjectId
+  employee_name String
+  position      String
+  date          DateTime
+  shift         String
+  location      String
+
+  // Relation to Employee (optional - if you want to link to Employee model)
+  employee Employee? @relation(fields: [employee_id], references: [id])
+
+  // Timestamps (recommended)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Indexes for better query performance
+  @@index([employee_id])
+  @@index([date])
+  @@index([shift])
 }
