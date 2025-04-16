@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Authentication",
@@ -12,7 +15,9 @@ export default function AuthLayout({
 }) {
   return (
     <html lang="en">
-      <body className={` bg-gradient-to-br from-gray-50 to-gray-100`}>
+      <body
+        className={`${inter.className} bg-gradient-to-br from-gray-50 to-gray-100`}
+      >
         <main className="flex min-h-screen flex-col items-center justify-center p-4">
           <div className="w-full max-w-md space-y-6">
             <div className="text-center">

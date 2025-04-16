@@ -102,8 +102,8 @@ export default function DashboardPage() {
         locationFilter === "all" || schedule.location === locationFilter;
       const matchesLeaveStatus =
         leaveFilter === "all" ||
-        (leaveFilter === "onLeave" && schedule?.onLeave) ||
-        (leaveFilter === "notOnLeave" && !schedule?.onLeave);
+        (leaveFilter === "onLeave" && employee?.onLeave) ||
+        (leaveFilter === "notOnLeave" && !employee?.onLeave);
       return matchesDate && matchesLocation && matchesLeaveStatus;
     });
   }, [schedules, date, locationFilter, leaveFilter, employees]);
@@ -150,7 +150,7 @@ export default function DashboardPage() {
 
   // Count employees on leave
   const onLeaveCount = useMemo(() => {
-    return filteredSchedules.filter((s) => s.onLeave).length;
+    return employees.filter((e) => e.onLeave).length;
   }, [employees]);
 
   // Add new schedule
@@ -169,7 +169,6 @@ export default function DashboardPage() {
       employee_name: employee.name,
       position: employee.position,
       date: date,
-      onLeave: false,
       shift,
       location,
     };
@@ -194,14 +193,14 @@ export default function DashboardPage() {
   };
 
   // Toggle employee leave status
-  const toggleLeaveStatus = (scheduleId: string) => {
-    const schedule = schedules.find((s) => s.id === scheduleId);
+  const toggleLeaveStatus = (employeeId: string) => {
+    const employee = employees.find((e) => e.id === employeeId);
 
-    if (schedule) {
+    if (employee) {
       dispatch(
-        updateSchedule({
-          id: schedule.id,
-          onLeave: !schedule.onLeave,
+        updateEmployee({
+          id: employee.id,
+          data: { onLeave: !employee.onLeave },
         })
       );
     }
@@ -245,27 +244,6 @@ export default function DashboardPage() {
       if (matchedShift && employee) {
         // Adjust position names to match the image
         let position: string = schedule.position;
-        if (schedule.position === EmployeeRole.MANAGER && !schedule.onLeave)
-          position = positions[0];
-        if (schedule.position === EmployeeRole.RA && !schedule.onLeave)
-          position = positions[1];
-        if (
-          (schedule.position === EmployeeRole.IT_TECHNICIAN ||
-            schedule.position === EmployeeRole.NEURO_TECHNICIAN) &&
-          !schedule.onLeave
-        )
-          position = positions[2];
-        if (schedule.position === EmployeeRole.VOLUNTEER && !schedule.onLeave)
-          position = positions[3];
-        if (groupedData[matchedShift][position]) {
-          groupedData[matchedShift][position].push(employee.name);
-        }
-      }
-    });
-    // Populate on-leave employees
-    schedules.forEach((schedule: EmployeeSchedule) => {
-      if (schedule.onLeave) {
-        let position: string = schedule.position;
         if (schedule.position === EmployeeRole.MANAGER) position = positions[0];
         if (schedule.position === EmployeeRole.RA) position = positions[1];
         if (
@@ -275,8 +253,26 @@ export default function DashboardPage() {
           position = positions[2];
         if (schedule.position === EmployeeRole.VOLUNTEER)
           position = positions[3];
+        if (groupedData[matchedShift][position]) {
+          groupedData[matchedShift][position].push(employee.name);
+        }
+      }
+    });
+    // Populate on-leave employees
+    employees.forEach((employee: Employee) => {
+      if (employee.onLeave) {
+        let position: string = employee.position;
+        if (employee.position === EmployeeRole.MANAGER) position = positions[0];
+        if (employee.position === EmployeeRole.RA) position = positions[1];
+        if (
+          employee.position === EmployeeRole.IT_TECHNICIAN ||
+          employee.position === EmployeeRole.NEURO_TECHNICIAN
+        )
+          position = positions[2];
+        if (employee.position === EmployeeRole.VOLUNTEER)
+          position = positions[3];
         if (onLeaveEmployees[position]) {
-          onLeaveEmployees[position].push(schedule.employee_name);
+          onLeaveEmployees[position].push(employee.name);
         }
       }
     });
@@ -469,7 +465,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
           {positions.map((position) => (
             <Card key={position} className="p-2">
               <div className="flex justify-between items-center">
@@ -530,21 +526,25 @@ export default function DashboardPage() {
                           >
                             <div className="flex flex-col space-y-1">
                               {shiftSchedules.map((schedule) => {
+                                const employee = employees.find(
+                                  (e) => e.id === schedule.employee_id
+                                );
+
                                 return (
                                   <div
                                     key={schedule.id}
                                     className={`p-1 rounded text-xs ${
-                                      schedule?.onLeave
+                                      employee?.onLeave
                                         ? "bg-amber-50 text-amber-800"
                                         : "bg-gray-50"
                                     }`}
                                   >
-                                    <div className="flex justify-center gap-4 items-center">
+                                    <div className="flex justify-between items-center">
                                       <div className="flex items-center">
                                         <span className="font-medium">
                                           {schedule.employee_name}
                                         </span>
-                                        {schedule?.onLeave && (
+                                        {employee?.onLeave && (
                                           <Badge
                                             variant="secondary"
                                             className="ml-1 text-xs"
@@ -570,16 +570,16 @@ export default function DashboardPage() {
                                           >
                                             <DropdownMenuItem
                                               onClick={() =>
-                                                schedule &&
-                                                toggleLeaveStatus(schedule.id)
+                                                employee &&
+                                                toggleLeaveStatus(employee.id)
                                               }
                                             >
-                                              {schedule?.onLeave ? (
+                                              {employee?.onLeave ? (
                                                 <Check className="mr-2 h-3 w-3 text-green-500" />
                                               ) : (
                                                 <X className="mr-2 h-3 w-3 text-amber-500" />
                                               )}
-                                              {schedule?.onLeave
+                                              {employee?.onLeave
                                                 ? "Mark as returned"
                                                 : "Mark as on leave"}
                                             </DropdownMenuItem>

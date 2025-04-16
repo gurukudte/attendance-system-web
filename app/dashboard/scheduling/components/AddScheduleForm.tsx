@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Employee } from "@/app/dashboard/employees/slice/employeeSlice";
-import { useAppSelector } from "@/redux/hooks/useAppSelector";
 
 export function AddScheduleForm({
   employees,
@@ -30,17 +29,11 @@ export function AddScheduleForm({
   position: string;
   locations: string[];
 }) {
-  const { schedules } = useAppSelector((state) => state.schedules);
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [selectedLocation, setSelectedLocation] = useState(locations[0] || "");
-  const onLeaveEmployees = schedules.filter((s) => s.onLeave);
-  const onLeaveEmployeeIds =
-    onLeaveEmployees.length > 0
-      ? onLeaveEmployees.map((s) => s.employee_id)
-      : [];
-  const availableEmployees = employees.filter(
-    (emp) => !onLeaveEmployeeIds.includes(emp.id)
-  );
+
+  const availableEmployees = employees.filter((emp) => !emp.onLeave);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedEmployee && selectedLocation) {

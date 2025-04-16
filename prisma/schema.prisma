@@ -122,8 +122,9 @@ model Employee {
   joinDate       DateTime?
   lastWorkingDay DateTime?
 
-  status EmployeeStatus @default(ACTIVE)
-  role   Role           @default(USER)
+  status  EmployeeStatus @default(ACTIVE)
+  role    Role           @default(USER)
+  onLeave Boolean        @default(false)
 
   customData Json? // Stores dynamic fields based on customEmployeeFields
 
@@ -142,7 +143,6 @@ model EmployeeSchedule {
   shift         String
   location      String
 
-  onLeave  Boolean   @default(false)
   // Relation to Employee (optional - if you want to link to Employee model)
   employee Employee? @relation(fields: [employee_id], references: [id])
 

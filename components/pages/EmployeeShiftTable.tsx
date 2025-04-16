@@ -99,7 +99,7 @@ export function EmployeeShiftTable() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_FINGERPRINT_API}/attendance/?${queryParams}`,
+        `${process.env.FINGERPRINT_API}/?${queryParams}`,
         {
           headers: {
             "ngrok-skip-browser-warning": "69420",
