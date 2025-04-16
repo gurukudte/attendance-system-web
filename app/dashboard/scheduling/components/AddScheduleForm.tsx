@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Employee } from "@/app/dashboard/employees/slice/employeeSlice";
-import e from "cors";
 import { useAppSelector } from "@/redux/hooks/useAppSelector";
 
 export function AddScheduleForm({
