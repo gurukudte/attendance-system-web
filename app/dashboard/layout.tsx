@@ -10,17 +10,13 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { EmployeeShiftTable } from "@/components/pages/EmployeeShiftTable";
-import { SchedulingView } from "@/components/pages/SchedulingView";
-import { EmployeesView } from "@/components/pages/EmployeesView";
-import SettingsView from "@/components/pages/SettingsView";
 import { useAppDispatch } from "@/redux/hooks/useAppSelector";
-import { DashboardOverview } from "./components/DashboardOverview";
 import { fetchOrganization } from "../settings/slice/organizationSlice";
 import { fetchEmployees } from "@/app/dashboard/employees/slice/employeeSlice";
 import { NavItem } from "./components/NavItem";
 import { usePathname, useRouter } from "next/navigation";
 import { Header } from "./components/Header";
+import Link from "next/link";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -70,9 +66,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       >
         <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700">
           {sidebarOpen ? (
-            <h1 className="text-xl font-semibold text-gray-800 dark:text-white">
-              ShiftTrack
-            </h1>
+            <Link href="/dashboard" className="flex items-center space-x-2">
+              <span className="inline-block font-bold text-xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                TalentSync
+              </span>
+            </Link>
           ) : (
             <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
               <span className="text-white font-bold">ST</span>

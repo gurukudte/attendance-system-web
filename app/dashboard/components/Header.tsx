@@ -17,6 +17,9 @@ import {
 // ... other imports
 
 import * as React from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export interface IHeaderProps {
   sidebarOpen: boolean;
@@ -30,6 +33,14 @@ export function Header({
   toggleMobileSidebarAction,
 }: IHeaderProps) {
   const { data: session } = useSession();
+
+  const router = useRouter();
+
+  const handleLinkClick = (href: string) => {
+    router.push(href);
+    // Close the dropdown (implementation depends on your dropdown library)
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+  };
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm z-10">
       <div className="flex items-center justify-between h-16 px-4">
@@ -55,7 +66,7 @@ export function Header({
             </button>
 
             {/* User dropdown with logout */}
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="flex items-center cursor-pointer">
                   <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
@@ -81,6 +92,54 @@ export function Header({
                 <DropdownMenuItem className="cursor-pointer">
                   <FiSettings className="mr-2 h-4 w-4" />
                   <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
+                  onClick={() => signOut({ callbackUrl: "/auth/login" })}
+                >
+                  <FiLogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu> */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="flex items-center cursor-pointer">
+                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+                    <span className="text-white font-bold">
+                      {session?.user.name[0].toUpperCase()}
+                    </span>
+                  </div>
+                  {sidebarOpen && (
+                    <div className="flex items-center ml-2">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {session?.user.name}
+                      </span>
+                      <FiChevronDown className="w-4 h-4 ml-1 text-gray-500" />
+                    </div>
+                  )}
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end">
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/profile"
+                    className="flex items-center w-full px-2 py-1.5 cursor-pointer"
+                    onClick={() => handleLinkClick("/profile")}
+                  >
+                    <FiUser className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/dashboard/settings"
+                    className="flex items-center w-full px-2 py-1.5 cursor-pointer"
+                    onClick={() => handleLinkClick("/settings")}
+                  >
+                    <FiSettings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"

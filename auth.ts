@@ -68,7 +68,6 @@ export const {
       return session;
     },
     async jwt({ token, account }) {
-      console.log("account:", account);
       if (account) {
         token.accessToken = account.access_token;
       }
