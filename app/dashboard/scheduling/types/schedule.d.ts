@@ -7,6 +7,7 @@ interface EmployeeSchedule {
   date: Date;
   shift: string;
   location: string;
+  onLeave: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -19,6 +20,7 @@ interface CreateScheduleDto {
   date: date;
   shift: string;
   location: string;
+  onLeave: boolean;
 }
 
 interface UpdateScheduleDto extends Partial<CreateScheduleDto> {

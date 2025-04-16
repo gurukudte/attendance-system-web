@@ -42,7 +42,6 @@ export interface Employee {
   lastWorkingDay?: Date | null;
   status: EmployeeStatus;
   role: Role;
-  onLeave: boolean;
   customData?: any | null; // Consider using a more specific type if possible
   createdAt: Date;
   updatedAt: Date;

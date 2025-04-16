@@ -11,6 +11,7 @@ const scheduleSchema = z.object({
   date: z.string().datetime({ offset: true }),
   shift: z.string().min(1, "Shift is required"),
   location: z.string().min(1, "Location is required"),
+  onLeave: z.boolean(),
 });
 
 const updateSchema = scheduleSchema.partial().extend({

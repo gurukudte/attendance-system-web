@@ -32,7 +32,6 @@ export const employeeSchema = z.object({
   joinDate: z.coerce.date().optional(),
   lastWorkingDay: z.coerce.date().optional(),
   status: EmployeeStatus.default("ACTIVE"),
-  onLeave: z.boolean().optional(),
   role: Role.default("USER"),
   customData: z.record(z.any()).optional(),
 });
